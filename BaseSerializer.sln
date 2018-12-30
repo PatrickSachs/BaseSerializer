@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BaseSerializer", "BaseSerializer\BaseSerializer.csproj", "{9C779C47-2F36-4D90-9C4A-275D7DF59D5F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{014A60C0-6C1F-47F8-953A-F2176433AEA1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9C779C47-2F36-4D90-9C4A-275D7DF59D5F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C779C47-2F36-4D90-9C4A-275D7DF59D5F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C779C47-2F36-4D90-9C4A-275D7DF59D5F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C779C47-2F36-4D90-9C4A-275D7DF59D5F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{014A60C0-6C1F-47F8-953A-F2176433AEA1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{014A60C0-6C1F-47F8-953A-F2176433AEA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{014A60C0-6C1F-47F8-953A-F2176433AEA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{014A60C0-6C1F-47F8-953A-F2176433AEA1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
