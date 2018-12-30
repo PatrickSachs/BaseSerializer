@@ -13,7 +13,7 @@ namespace PatrickSachs.Serializer.Implementations
     {
         public static readonly ListSerializer Instance = new ListSerializer();
 
-        public int Order => int.MaxValue - 1;
+        public int Order => int.MinValue + 100;
 
         public bool IsHandled(SerializationContext.Ref reference)
         {

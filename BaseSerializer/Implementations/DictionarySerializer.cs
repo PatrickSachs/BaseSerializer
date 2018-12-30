@@ -10,7 +10,7 @@ namespace PatrickSachs.Serializer.Implementations
     {
         public static readonly DictionarySerializer Instance = new DictionarySerializer();
 
-        public int Order => int.MaxValue - 1;
+        public int Order => int.MinValue + 100;
 
         public bool IsHandled(SerializationContext.Ref reference)
         {

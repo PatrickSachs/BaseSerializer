@@ -11,7 +11,7 @@ namespace PatrickSachs.Serializer
     /// </summary>
     public class BaseSerializer
     {
-        private readonly IList<IBaseSerializer> _serializers;
+        private readonly List<IBaseSerializer> _serializers;
         internal readonly BiDictionary<string, Assembly> _assemblyAliases;
 
         public BaseSerializer()
@@ -21,17 +21,32 @@ namespace PatrickSachs.Serializer
                 {"mscorlib", typeof(Type).Assembly},
                 {"serializer", typeof(BaseSerializer).Assembly}
             };
-            List<IBaseSerializer> list = new List<IBaseSerializer>
+            _serializers = new List<IBaseSerializer>
             {
+                // Fallback
                 FallbackSerializer.Instance,
+                // Integers
+                ByteSerializer.Instance,
+                UnsignedByteSerializer.Instance,
+                ShortSerializer.Instance,
+                UnsignedShortSerializer.Instance,
                 IntegerSerializer.Instance,
-                StringSerializer.Instance,
+                UnsignedIntegerSerializer.Instance,
+                LongSerializer.Instance,
+                UnsignedLongSerializer.Instance,
+                // Floats
                 FloatSerializer.Instance,
+                DoubleSerializer.Instance,
+                DecimalSerializer.Instance,
+                // Textual
+                CharSerializer.Instance,
+                StringSerializer.Instance,
+                // Other data types
+                BoolSerializer.Instance,
                 ListSerializer.Instance,
                 DictionarySerializer.Instance
             };
-            list.Sort(BaseSerializerComparer.Instance);
-            _serializers = list;
+            _serializers.Sort(BaseSerializerComparer.Instance);
         }
 
         /// <summary>
@@ -43,7 +58,7 @@ namespace PatrickSachs.Serializer
         /// All possible aliases that can be used for assembly names instead of a fully qualified assembly name.
         /// </summary>
         public IDictionary<string, Assembly> AssemblyAliases => _assemblyAliases;
-        
+
         /// <summary>
         /// Serializes the given object into a XML document.
         /// </summary>
