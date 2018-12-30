@@ -27,7 +27,8 @@ namespace PatrickSachs.Serializer
                 IntegerSerializer.Instance,
                 StringSerializer.Instance,
                 FloatSerializer.Instance,
-                ListSerializer.Instance
+                ListSerializer.Instance,
+                DictionarySerializer.Instance
             };
             list.Sort(BaseSerializerComparer.Instance);
             _serializers = list;

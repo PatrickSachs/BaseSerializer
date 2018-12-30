@@ -38,7 +38,7 @@ namespace PatrickSachs.Serializer.Implementations
                 null, CallingConventions.HasThis, Array.Empty<Type>(), null);
             if (ctor != null)
             {
-                return ctor.Invoke(null, Array.Empty<object>());
+                return ctor.Invoke(Array.Empty<object>());
             }
 
             // Dangerous for lists!
@@ -51,7 +51,7 @@ namespace PatrickSachs.Serializer.Implementations
             foreach (XElement element in source.Element.Elements())
             {
                 string id = element.Value;
-                object value = context.Serializer.DeserializeReference(id, context);
+                object value = context.Serializer.DeserializeReference(id, context)?.Object;
                 list.Add(value);
             }
         }

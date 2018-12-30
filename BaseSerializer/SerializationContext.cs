@@ -196,7 +196,7 @@ namespace PatrickSachs.Serializer
                 Object = obj;
                 Element = new XElement(Id);
                 Type = obj?.GetType();
-                Element.SetAttributeValue("type", SerializerTypeName(context.Serializer, Type));
+                Element.SetAttributeValue("type", SerializerTypeName(context?.Serializer, Type));
             }
 
             /// <summary>
@@ -219,7 +219,7 @@ namespace PatrickSachs.Serializer
                 Element = el;
                 Id = el.Name.LocalName;
                 var typeAttribute = el.Attribute("type");
-                Type = typeAttribute != null ? SerializerType(context.Serializer, typeAttribute.Value) : null;
+                Type = typeAttribute != null ? SerializerType(context?.Serializer, typeAttribute.Value) : null;
                 Object = null;
             }
 
