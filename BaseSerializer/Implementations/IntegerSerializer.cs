@@ -2,7 +2,7 @@ using System.Globalization;
 
 namespace BaseSerializer.Implementations
 {
-    public class IntegerSerializer : IGameSerializer
+    public class IntegerSerializer : IBaseSerializer
     {
         public static readonly IntegerSerializer Instance = new IntegerSerializer();
         

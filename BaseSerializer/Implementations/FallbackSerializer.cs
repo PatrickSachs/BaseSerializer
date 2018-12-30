@@ -9,7 +9,7 @@ namespace BaseSerializer.Implementations
     /// <summary>
     ///     Fallback serializes. Uses reflection to get all desired fields and then serializes them using other serializers.
     /// </summary>
-    public class FallbackSerializer : IGameSerializer
+    public class FallbackSerializer : IBaseSerializer
     {
         /// <summary>
         /// What should be serialized? Flagged enum.

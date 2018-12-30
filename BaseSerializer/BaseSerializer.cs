@@ -7,11 +7,11 @@ using BaseSerializer.Implementations;
 namespace BaseSerializer
 {
     /// <summary>
-    /// The game serializer is used to serialize objects to XML and back.
+    /// The base serializer is used to serialize objects to XML and back.
     /// </summary>
     public class BaseSerializer
     {
-        private readonly IList<IGameSerializer> _serializers;
+        private readonly IList<IBaseSerializer> _serializers;
         internal readonly BiDictionary<string, Assembly> _assemblyAliases;
 
         public BaseSerializer()
@@ -21,21 +21,21 @@ namespace BaseSerializer
                 {"mscorlib", typeof(Type).Assembly},
                 {"serializer", typeof(BaseSerializer).Assembly}
             };
-            List<IGameSerializer> list = new List<IGameSerializer>
+            List<IBaseSerializer> list = new List<IBaseSerializer>
             {
                 FallbackSerializer.Instance,
                 IntegerSerializer.Instance,
                 StringSerializer.Instance,
                 FloatSerializer.Instance
             };
-            list.Sort(GameSerializerComparer.Instance);
+            list.Sort(BaseSerializerComparer.Instance);
             _serializers = list;
         }
 
         /// <summary>
-        /// All serializers used by this game serializer.
+        /// All serializers used by this base serializer.
         /// </summary>
-        public IList<IGameSerializer> Serializers => _serializers;
+        public IList<IBaseSerializer> Serializers => _serializers;
 
         /// <summary>
         /// All possible aliases that can be used for assembly names instead of a fully qualified assembly name.
@@ -89,7 +89,7 @@ namespace BaseSerializer
                                             target.GetType() + ", but the one in XML is " + rootRef.Type);
             }
 
-            IGameSerializer serializer = GetSerializer(rootRef);
+            IBaseSerializer serializer = GetSerializer(rootRef);
             rootRef.Object = target;
             ctx.StoreReference(rootRef);
             serializer.Deserialize(rootRef, ctx);
@@ -107,7 +107,7 @@ namespace BaseSerializer
             if (theRef == null)
             {
                 theRef = ctx.CreateReference(data);
-                IGameSerializer serializer = GetSerializer(theRef);
+                IBaseSerializer serializer = GetSerializer(theRef);
                 serializer.Serialize(theRef, ctx);
             }
 
@@ -126,7 +126,7 @@ namespace BaseSerializer
             SerializationContext.Ref theRef = ctx.FindReference(id);
             if (theRef.Type != null && theRef.Object == null)
             {
-                IGameSerializer serializer = GetSerializer(theRef);
+                IBaseSerializer serializer = GetSerializer(theRef);
                 theRef.Object = serializer.CreateInstance(theRef);
                 ctx.StoreReference(theRef);
                 serializer.Deserialize(theRef, ctx);
@@ -140,7 +140,7 @@ namespace BaseSerializer
         /// </summary>
         /// <param name="theRef">The reference.</param>
         /// <returns>The serializer, or null.</returns>
-        private IGameSerializer GetSerializer(SerializationContext.Ref theRef)
+        private IBaseSerializer GetSerializer(SerializationContext.Ref theRef)
         {
             foreach (var serializer in _serializers)
             {

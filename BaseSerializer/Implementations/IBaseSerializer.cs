@@ -4,7 +4,7 @@ namespace BaseSerializer.Implementations
     ///     Implement this interface when creating custom serializers for the base serializer.<br />All non-abstract classes
     ///     implementing this class will automatically be registered. These classes must provide a default public constructor.
     /// </summary>
-    public interface IGameSerializer
+    public interface IBaseSerializer
     {
         /// <summary>
         ///     The order of this serializer. Serializers with a higher order will be considered first.

@@ -3,11 +3,11 @@ using BaseSerializer.Implementations;
 
 namespace BaseSerializer
 {
-    public class GameSerializerComparer : IComparer<IGameSerializer>
+    public class BaseSerializerComparer : IComparer<IBaseSerializer>
     {
-        public static readonly GameSerializerComparer Instance = new GameSerializerComparer();
+        public static readonly BaseSerializerComparer Instance = new BaseSerializerComparer();
 
-        public int Compare(IGameSerializer x, IGameSerializer y)
+        public int Compare(IBaseSerializer x, IBaseSerializer y)
         {
             if (x == null)
             {

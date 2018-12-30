@@ -1,6 +1,6 @@
 namespace BaseSerializer.Implementations
 {
-    public class StringSerializer : IGameSerializer
+    public class StringSerializer : IBaseSerializer
     {
         public static readonly StringSerializer Instance = new StringSerializer();
         
