@@ -13,12 +13,11 @@ namespace Test.Serializers
         private class Data
         {
             public string String;
-            public int Integer;
             public Data Nested;
             
             protected bool Equals(Data other)
             {
-                return string.Equals(String, other.String) && Integer == other.Integer && Equals(Nested, other.Nested);
+                return string.Equals(String, other.String) && Equals(Nested, other.Nested);
             }
 
             public override bool Equals(object obj)
@@ -34,7 +33,6 @@ namespace Test.Serializers
                 unchecked
                 {
                     var hashCode = (String != null ? String.GetHashCode() : 0);
-                    hashCode = (hashCode * 397) ^ Integer;
                     hashCode = (hashCode * 397) ^ (Nested != null ? Nested.GetHashCode() : 0);
                     return hashCode;
                 }
