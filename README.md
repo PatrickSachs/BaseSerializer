@@ -206,7 +206,7 @@ This method deserializes an object. Pass the ID of a reference and it will retur
 
 ### Examples
 
-All examples mentioned here can be found in `Test/Examples` directory. In genereal the `Test` directiory is a good place to look if you are unsure on how to use the public API of the base serializer.
+All examples mentioned here can be found(with some minor modifications) in `Test/Examples` directory. In genereal the `Test` directiory is a good place to look if you are unsure on how to use the public API of the base serializer.
 
 #### Simple Serialization
 
@@ -266,9 +266,9 @@ Every field has been serialized into its own reference.
 
 The code can be found here: `Test/Examples/CyclicSerialization.cs` 
 
-However more often than not not all values are simple primitives. In a language such as C# we heavily work with classes having references to each other, which has a possbility to introduce cyclic references.
+However not all values are typically simple primitives. In a language such as C# we heavily work with classes having references to each other, which has a possibility to introduce cyclic references.
 
-To demonstrate this let's all another field to the `UserAccount` class: A list of friends.
+To demonstrate this let's add another field to the `UserAccount` class: A list of friends.
 
 ```csharp
 public IList<UserAccount> Friends = new List<UserAccount>();
@@ -323,8 +323,8 @@ And the output is(behold!):
 </Data>
 ```
 
-Let's take a look at this structure: Our root `<Data>` node as an attribute called `root`. This where our object begins. In our case this is `ref-1`, which is just a line below.
+Let's take a look at this structure: Our root `<Data>` node has an attribute called `root`. This where our object begins. In our case this is `ref-1`, which is just a line below.
 
-Its `<Friends>` node references our list of friends(`account.Friends`) at `ref-5`(the first list entry). This list has an entry for John(`ref-6`) which in turn has a friends list(`ref-9`) that contains an entry to `ref-1`.
+Its `<Friends>` node references our list of friends(`account.Friends`) at `ref-5`. This list has an entry for John(`ref-6`) which in turn has a friends list(`ref-9`) that contains an entry back to `ref-1`.
 
-Furthermore you may have noticed that the `<Gender>` of both Mike and John uses `ref-2`. Since everything is handlign using the reference system internally no value will be serialized twice.
+Furthermore you may have noticed that the `<Gender>` of both Mike and John uses `ref-3`. Since everything is handled using the reference system internally no value will be serialized twice.
