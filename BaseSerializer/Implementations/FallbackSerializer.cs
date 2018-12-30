@@ -4,7 +4,7 @@ using System.Reflection;
 using System.Runtime.Serialization;
 using System.Xml.Linq;
 
-namespace BaseSerializer.Implementations
+namespace PatrickSachs.Serializer.Implementations
 {
     /// <summary>
     ///     Fallback serializes. Uses reflection to get all desired fields and then serializes them using other serializers.
@@ -30,12 +30,12 @@ namespace BaseSerializer.Implementations
             /// <summary>
             /// Fields should be serialized.
             /// </summary>
-            Fields,
+            Fields = 1,
 
             /// <summary>
             /// Properties should be serialized.
             /// </summary>
-            Properties
+            Properties = 2
         }
 
         /// <summary>

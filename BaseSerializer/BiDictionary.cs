@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace BaseSerializer
+namespace PatrickSachs.Serializer
 {
     /// <summary>
     /// A simple & quick'n'dirty bi-directional dictionary.

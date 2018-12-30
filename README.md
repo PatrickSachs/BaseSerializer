@@ -203,3 +203,128 @@ public SerializationContext.Ref DeserializeReference(string id, SerializationCon
 ```
 
 This method deserializes an object. Pass the ID of a reference and it will return the fully deserialized `Ref`(or null if the ID does not exist). See examples below for further details.
+
+### Examples
+
+All examples mentioned here can be found in `Test/Examples` directory. In genereal the `Test` directiory is a good place to look if you are unsure on how to use the public API of the base serializer.
+
+#### Simple Serialization
+
+The code can be found here: `Test/Examples/SimpleSerialization.cs` 
+
+First of all we'll create a simple class to serialize:
+
+```csharp
+public class UserAccount
+{
+    public string Name;
+    public string Gender;
+    public int Age;
+
+    public UserAccount(string name, string gender, int age)
+    {
+        Name = name;
+        Gender = gender;
+        Age = age;
+    }
+}
+```
+
+By default the base serializer only serializes fields, so we'll just use simple public fields for everything. If you want to serialize properties there is an example in the `Test/Examples` directory for that aswell.
+
+Now let's get to writing the actual save method. 
+
+```csharp
+public void SaveData()
+{
+    UserAccount account = new UserAccount("Mike Johnson", "Male", 36);
+
+    BaseSerializer serializer = new BaseSerializer();
+    XDocument document = serializer.Serialize(account);
+    document.Save("~/Documents/Data.xml");
+}
+```
+
+This will create the following `Data.xml` file:
+
+```xml
+<Data root="ref-1">
+  <ref-1 type="/Test.Examples.SimpleSerialization+UserAccount, Test, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <Name>ref-2</Name>
+    <Gender>ref-3</Gender>
+    <Age>ref-4</Age>
+  </ref-1>
+  <ref-2 type="mscorlib/System.String">Mike Johnson</ref-2>
+  <ref-3 type="mscorlib/System.String">Male</ref-3>
+  <ref-4 type="mscorlib/System.Int32">36</ref-4>
+</Data>
+```
+
+Every field has been serialized into its own reference.
+
+#### Cyclic Serialization
+
+The code can be found here: `Test/Examples/CyclicSerialization.cs` 
+
+However more often than not not all values are simple primitives. In a language such as C# we heavily work with classes having references to each other, which has a possbility to introduce cyclic references.
+
+To demonstrate this let's all another field to the `UserAccount` class: A list of friends.
+
+```csharp
+public IList<UserAccount> Friends = new List<UserAccount>();
+```
+
+Now let's create some cyclic user accounts.
+
+```csharp
+public void SaveData()
+{
+    UserAccount account = new UserAccount("Mike Johnson", "Male", 36);
+    UserAccount jane = new UserAccount("Jane Doe", "Female", 42);
+    UserAccount john = new UserAccount("John Harper", "Male", 57);
+    account.Friends.Add(jane);
+    account.Friends.Add(john);
+    jane.Friends.Add(john);
+    john.Friends.Add(jane);
+    
+    BaseSerializer serializer = new BaseSerializer();
+    XDocument document = serializer.Serialize(account);
+    document.Save("~/Documents/Data.xml");
+}
+```
+
+And the output is(behold!):
+
+```xml
+<Data root="ref-1">
+  <ref-1 type="/Test.Examples.CyclicSerialization+UserAccount, Test, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <Name>ref-2</Name>
+    <Gender>ref-3</Gender>
+    <Age>ref-4</Age>
+    <Friends>ref-5</Friends>
+  </ref-1>
+  <ref-2 type="mscorlib/System.String">Mike Johnson</ref-2>
+  <ref-3 type="mscorlib/System.String">Male</ref-3>
+  <ref-4 type="mscorlib/System.Int32">36</ref-4>
+  <ref-5 type="mscorlib/System.Collections.Generic.List`1[[Test.Examples.CyclicSerialization+UserAccount, Test, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]">
+    <Entry>ref-6</Entry>
+  </ref-5>
+  <ref-6 type="/Test.Examples.CyclicSerialization+UserAccount, Test, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <Name>ref-7</Name>
+    <Gender>ref-3</Gender>
+    <Age>ref-8</Age>
+    <Friends>ref-9</Friends>
+  </ref-6>
+  <ref-7 type="mscorlib/System.String">John Harper</ref-7>
+  <ref-8 type="mscorlib/System.Int32">57</ref-8>
+  <ref-9 type="mscorlib/System.Collections.Generic.List`1[[Test.Examples.CyclicSerialization+UserAccount, Test, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]">
+    <Entry>ref-1</Entry>
+  </ref-9>
+</Data>
+```
+
+Let's take a look at this structure: Our root `<Data>` node as an attribute called `root`. This where our object begins. In our case this is `ref-1`, which is just a line below.
+
+Its `<Friends>` node references our list of friends(`account.Friends`) at `ref-5`(the first list entry). This list has an entry for John(`ref-6`) which in turn has a friends list(`ref-9`) that contains an entry to `ref-1`.
+
+Furthermore you may have noticed that the `<Gender>` of both Mike and John uses `ref-2`. Since everything is handlign using the reference system internally no value will be serialized twice.

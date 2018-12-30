@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using BaseSerializer.Implementations;
+using PatrickSachs.Serializer.Implementations;
 
-namespace BaseSerializer
+namespace PatrickSachs.Serializer
 {
     public class BaseSerializerComparer : IComparer<IBaseSerializer>
     {

@@ -1,10 +1,10 @@
-namespace BaseSerializer.Implementations
+namespace PatrickSachs.Serializer.Implementations
 {
     public class StringSerializer : IBaseSerializer
     {
         public static readonly StringSerializer Instance = new StringSerializer();
         
-        public int Order => int.MaxValue;
+        public int Order => int.MaxValue - 1;
 
         public bool IsHandled(SerializationContext.Ref reference)
         {

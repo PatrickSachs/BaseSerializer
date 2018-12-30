@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Xml.Linq;
 
-namespace BaseSerializer
+namespace PatrickSachs.Serializer
 {
     public class SerializationContext
     {
@@ -12,6 +12,7 @@ namespace BaseSerializer
         private readonly Dictionary<string, Ref> _idToRefs = new Dictionary<string, Ref>();
         private readonly Dictionary<object, Ref> _objToRefs = new Dictionary<object, Ref>();
         private readonly XElement _refs;
+        private ulong _lastId;
 
         /// <summary>
         /// Creates a new serialization context during serialization.
@@ -42,7 +43,7 @@ namespace BaseSerializer
 
             foreach (var element in _refs.Elements())
             {
-                Ref aRef = new Ref(serializer, element);
+                Ref aRef = new Ref(this, element);
                 _idToRefs.Add(aRef.Id, aRef);
             }
         }
@@ -126,7 +127,7 @@ namespace BaseSerializer
         /// <returns>The newly created reference.</returns>
         internal Ref CreateReference(object obj)
         {
-            Ref theRef = new Ref(_serializer, obj);
+            Ref theRef = new Ref(this, obj);
             _objToRefs.Add(obj, theRef);
             _idToRefs.Add(theRef.Id, theRef);
 
@@ -172,9 +173,10 @@ namespace BaseSerializer
             return Type.GetType(split[1]);
         }
 
-        private static string CreateId()
+        private string CreateId()
         {
-            return Guid.NewGuid().ToString().Replace("-", "");
+            _lastId++;
+            return "ref-" + _lastId;
         }
 
         /// <summary>
@@ -187,37 +189,37 @@ namespace BaseSerializer
             /// </summary>
             public static readonly Ref Null = new Ref(null, "null", null);
 
-            private Ref(BaseSerializer serializer, string id, object obj)
+            private Ref(SerializationContext context, string id, object obj)
             {
-                Serializer = serializer;
+                Context = context;
                 Id = id;
                 Object = obj;
                 Element = new XElement(Id);
                 Type = obj?.GetType();
-                Element.SetAttributeValue("type", SerializerTypeName(serializer, Type));
+                Element.SetAttributeValue("type", SerializerTypeName(context.Serializer, Type));
             }
 
             /// <summary>
             /// Creates a new reference during serialization.
             /// </summary>
-            /// <param name="serializer">The serializer.</param>
+            /// <param name="context">The serializer context.</param>
             /// <param name="obj">The object being serialized.</param>
-            internal Ref(BaseSerializer serializer, object obj) : this(serializer, "ref-" + CreateId(), obj)
+            internal Ref(SerializationContext context, object obj) : this(context, context.CreateId(), obj)
             {
             }
 
             /// <summary>
             /// Creates a new reference during deserialization.
             /// </summary>
-            /// <param name="serializer">The serializer.</param>
+            /// <param name="context">The serializer context.</param>
             /// <param name="el">The XML element being deserialized.</param>
-            internal Ref(BaseSerializer serializer, XElement el)
+            internal Ref(SerializationContext context, XElement el)
             {
-                Serializer = serializer;
+                Context = context;
                 Element = el;
                 Id = el.Name.LocalName;
                 var typeAttribute = el.Attribute("type");
-                Type = typeAttribute != null ? SerializerType(serializer, typeAttribute.Value) : null;
+                Type = typeAttribute != null ? SerializerType(context.Serializer, typeAttribute.Value) : null;
                 Object = null;
             }
 
@@ -227,9 +229,9 @@ namespace BaseSerializer
             public Type Type { get; }
 
             /// <summary>
-            /// The serializer of this reference. (Can be null!)
+            /// The serializer context of this reference. (Can be null!)
             /// </summary>
-            public BaseSerializer Serializer { get; }
+            public SerializationContext Context { get; }
 
             /// <summary>
             /// The ID of this reference.

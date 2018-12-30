@@ -1,4 +1,4 @@
-namespace BaseSerializer.Implementations
+namespace PatrickSachs.Serializer.Implementations
 {
     /// <summary>
     ///     Implement this interface when creating custom serializers for the base serializer.<br />All non-abstract classes

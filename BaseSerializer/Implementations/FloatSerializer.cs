@@ -1,12 +1,12 @@
 using System.Globalization;
 
-namespace BaseSerializer.Implementations
+namespace PatrickSachs.Serializer.Implementations
 {
     public class FloatSerializer : IBaseSerializer
     {
         public static readonly FloatSerializer Instance = new FloatSerializer();
         
-        public int Order => int.MaxValue;
+        public int Order => int.MaxValue - 1;
 
         public bool IsHandled(SerializationContext.Ref reference)
         {

@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Xml.Linq;
-using BaseSerializer.Implementations;
+using PatrickSachs.Serializer.Implementations;
 
-namespace BaseSerializer
+namespace PatrickSachs.Serializer
 {
     /// <summary>
     /// The base serializer is used to serialize objects to XML and back.
@@ -26,7 +26,8 @@ namespace BaseSerializer
                 FallbackSerializer.Instance,
                 IntegerSerializer.Instance,
                 StringSerializer.Instance,
-                FloatSerializer.Instance
+                FloatSerializer.Instance,
+                ListSerializer.Instance
             };
             list.Sort(BaseSerializerComparer.Instance);
             _serializers = list;
