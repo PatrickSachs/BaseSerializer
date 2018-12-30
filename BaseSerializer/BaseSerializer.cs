@@ -96,7 +96,7 @@ namespace BaseSerializer
         }
 
         /// <summary>
-        /// Serializes the given object. 
+        /// Serializes the given object. (If this object has already been serialized the reference will be reused)
         /// </summary>
         /// <param name="data">The object.</param>
         /// <param name="ctx">The context.</param>
@@ -120,11 +120,11 @@ namespace BaseSerializer
         /// </summary>
         /// <param name="id">The ID of the reference.</param>
         /// <param name="ctx">The context.</param>
-        /// <returns>The reference.</returns>
+        /// <returns>The reference(or null if the ID does not exist).</returns>
         public SerializationContext.Ref DeserializeReference(string id, SerializationContext ctx)
         {
             SerializationContext.Ref theRef = ctx.FindReference(id);
-            if (theRef.Type != null && theRef.Object == null)
+            if (theRef != null && theRef.Type != null && theRef.Object == null)
             {
                 IBaseSerializer serializer = GetSerializer(theRef);
                 theRef.Object = serializer.CreateInstance(theRef);

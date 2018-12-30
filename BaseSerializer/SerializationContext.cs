@@ -55,7 +55,7 @@ namespace BaseSerializer
         /// <summary>
         /// The root reference of this context.
         /// </summary>
-        public string RootReference
+        internal string RootReference
         {
             get => _refs.Attribute("root")?.Value ?? "null";
             set => _refs.SetAttributeValue("root", value);
@@ -64,7 +64,7 @@ namespace BaseSerializer
         /// <summary>
         /// The XML document used by this context.
         /// </summary>
-        public XDocument Document { get; }
+        internal XDocument Document { get; }
 
         /// <summary>
         /// Finds a reference with the given ID.
