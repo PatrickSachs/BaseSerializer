@@ -16,12 +16,12 @@ namespace PatrickSachs.Serializer.Implementations
         public void Serialize(SerializationContext.Ref target, SerializationContext context)
         {
             float number = (float) target.Object;
-            target.Element.Value = number.ToString(CultureInfo.InvariantCulture);
+            target.Element.Value = number.ToString("R", CultureInfo.InvariantCulture);
         }
 
         public object CreateInstance(SerializationContext.Ref source)
         {
-            float value = float.Parse(source.Element.Value);
+            float value = float.Parse(source.Element.Value, NumberStyles.Any, CultureInfo.InvariantCulture);
             return value;
         }
 

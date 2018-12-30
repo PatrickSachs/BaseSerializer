@@ -21,7 +21,7 @@ namespace PatrickSachs.Serializer.Implementations
 
         public object CreateInstance(SerializationContext.Ref source)
         {
-            decimal value = decimal.Parse(source.Element.Value);
+            decimal value = decimal.Parse(source.Element.Value, CultureInfo.InvariantCulture);
             return value;
         }
 

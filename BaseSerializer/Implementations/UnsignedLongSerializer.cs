@@ -21,7 +21,7 @@ namespace PatrickSachs.Serializer.Implementations
 
         public object CreateInstance(SerializationContext.Ref source)
         {
-            ulong value = ulong.Parse(source.Element.Value);
+            ulong value = ulong.Parse(source.Element.Value, CultureInfo.InvariantCulture);
             return value;
         }
 

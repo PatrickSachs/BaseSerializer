@@ -21,7 +21,7 @@ namespace PatrickSachs.Serializer.Implementations
 
         public object CreateInstance(SerializationContext.Ref source)
         {
-            long value = long.Parse(source.Element.Value);
+            long value = long.Parse(source.Element.Value, CultureInfo.InvariantCulture);
             return value;
         }
 

@@ -15,8 +15,8 @@ namespace PatrickSachs.Serializer.Implementations
 
         public void Serialize(SerializationContext.Ref target, SerializationContext context)
         {
-            char integer = (char) target.Object;
-            target.Element.Value = integer.ToString(CultureInfo.InvariantCulture);
+            char character = (char) target.Object;
+            target.Element.Value = character.ToString(CultureInfo.InvariantCulture);
         }
 
         public object CreateInstance(SerializationContext.Ref source)
