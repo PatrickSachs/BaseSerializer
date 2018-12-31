@@ -165,7 +165,7 @@ namespace PatrickSachs.Serializer
                                             "', expected to be delimited by a single slash.");
             }
 
-            if (serializer._assemblyAliases.TryGetValue(split[1], out Assembly assembly))
+            if (serializer._assemblyAliases.TryGetValue(split[0], out Assembly assembly))
             {
                 return assembly.GetType(split[1]);
             }
